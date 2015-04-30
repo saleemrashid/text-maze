@@ -6,9 +6,21 @@
 import controls
 from controls import ARROW_UP, ARROW_LEFT, ARROW_DOWN, ARROW_RIGHT
 
+keys = {
+    "w": ARROW_UP,
+    "a": ARROW_LEFT,
+    "s": ARROW_DOWN,
+    "d": ARROW_RIGHT
+}
+
+def key_transform(c):
+    c = c.lower()
+    return keys[c] if c in keys else c
+
 def main():
     while True:
-        c = controls.get()
+        c = key_transform(controls.get())
+
         if c == ARROW_UP:
             print("up")
         elif c == ARROW_LEFT:
