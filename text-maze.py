@@ -56,7 +56,7 @@ def clear():
     os.system("clear") if os.name == "posix" else os.system("cls")
 
 def main():
-    maze = Maze(10, 10)
+    maze = Maze(16, 8)
     frees = []
     for y, row in enumerate(maze):
         for x, wall in enumerate(row):
