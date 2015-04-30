@@ -18,9 +18,9 @@ def key_transform(c):
     c = c.lower() if len(c) == 1 else c
     return keys[c] if c in keys else c
 
-ASCII_PLAYER = "X"
-ASCII_WALL = "#"
-ASCII_BLANK = " "
+ASCII_PLAYER = "X "
+ASCII_WALL = "# "
+ASCII_BLANK = "  "
 
 import os
 
