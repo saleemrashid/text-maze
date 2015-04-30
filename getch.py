@@ -15,7 +15,7 @@ def _load_getch():
         fd = sys.stdin.fileno()
         restore = termios.tcgetattr(fd)
         try:
-            tty.setraw(fd)
+            tty.setcbreak(fd)
             ch = sys.stdin.read(1)
         finally:
             termios.tcsetattr(fd, termios.TCSADRAIN, restore)
