@@ -38,7 +38,7 @@ def draw(maze, px, py):
         print()
 
 def verify(maze, player):
-    return len(maze) > player[1] and len(maze[player[1]]) > player[0] and not maze[player[1]][player[0]]
+    return player[0] >= 0 and player[1] >= 0 and len(maze) > player[1] and len(maze[player[1]]) > player[0] and not maze[player[1]][player[0]]
 
 def move(c, maze, player):
     old = player[:]
