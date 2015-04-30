@@ -25,8 +25,8 @@ import os
 
 def draw(maze, px, py):
     player = (px, py)
-    for x, column in enumerate(maze):
-        for y, status in enumerate(column):
+    for y, row in enumerate(maze):
+        for x, status in enumerate(row):
             if player == (x, y):
                 print(ASCII_PLAYER, end="")
             else:
