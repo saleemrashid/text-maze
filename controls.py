@@ -2,8 +2,8 @@ from getch import getch, ungetch
 
 ARROW_UP = "\x1b[A"
 ARROW_DOWN = "\x1b[B"
-ARROW_LEFT = "\x1b[D"
 ARROW_RIGHT = "\x1b[C"
+ARROW_LEFT = "\x1b[D"
 
 def get():
     c = getch()
