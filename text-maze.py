@@ -24,7 +24,8 @@ ASCII_BLANK = " "
 import os
 
 def generate_maze(width, height):
-    maze = [[False] * width for row in range(height)]
+    maze = [[True] * width] + [[True] + [False] * (width - 2) + [True] for row in range(height - 2)] + [[True] * width]
+    maze[1][0] = maze[-2][-1] = False
     return maze
 
 def draw(maze, px, py):
