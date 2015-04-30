@@ -5,6 +5,7 @@
 
 import controls
 from controls import ARROW_UP, ARROW_LEFT, ARROW_DOWN, ARROW_RIGHT
+from maze import Maze
 
 keys = {
     "w": ARROW_UP,
@@ -22,11 +23,6 @@ ASCII_WALL = "#"
 ASCII_BLANK = " "
 
 import os
-
-def generate_maze(width, height):
-    maze = [[True] * width] + [[True] + [False] * (width - 2) + [True] for row in range(height - 2)] + [[True] * width]
-    maze[1][0] = maze[-2][-1] = False
-    return maze
 
 def draw(maze, px, py):
     player = (px, py)
@@ -60,7 +56,7 @@ def clear():
     os.system("clear") if os.name == "posix" else os.system("cls")
 
 def main():
-    maze = generate_maze(10, 10)
+    maze = Maze(10, 10)
     frees = []
     for y, row in enumerate(maze):
         for x, wall in enumerate(row):
