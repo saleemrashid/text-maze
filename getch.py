@@ -1,4 +1,5 @@
 __all__ = ["getch", "ungetch"]
+from collections import deque
 
 def _load_getch():
     try:
@@ -7,7 +8,9 @@ def _load_getch():
     except ImportError:
         # Windows
         import msvcrt
-        return msvcrt.getch
+        def _getch():
+            return chr(ord(msvcrt.getch()))
+        return _getch
 
     # POSIX
     import sys, tty
@@ -25,7 +28,7 @@ def _load_getch():
 
 _getch = _load_getch()
 
-buf = []
+buf = deque()
 
 def getch():
     if len(buf):
@@ -34,4 +37,4 @@ def getch():
         return _getch()
 
 def ungetch(c):
-    buf.append(c)
+    buf.appendleft(c)

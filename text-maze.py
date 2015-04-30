@@ -14,7 +14,7 @@ keys = {
 }
 
 def key_transform(c):
-    c = c.lower()
+    c = c.lower() if len(c) == 1 else c
     return keys[c] if c in keys else c
 
 def main():
