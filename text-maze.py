@@ -23,7 +23,8 @@ ASCII_BLANK = " "
 
 import os
 
-def draw(maze, player):
+def draw(maze, px, py):
+    player = (px, py)
     for x, column in enumerate(maze):
         for y, status in enumerate(column):
             if player == (x, y):
@@ -36,12 +37,23 @@ def clear():
     os.system("clear") if os.name == "posix" else os.system("cls")
 
 def main():
-    clear()
 
     maze = [[1,1,1],[1,1,1],[1,1,1]]
-    player = (0, 0)
+    player = [0, 0]
 
-    draw(maze, player)
+    while True:
+        clear()
+        draw(maze, *player)
+
+        c = key_transform(controls.get())
+        if c == ARROW_UP:
+            player[1] -= 1
+        elif c == ARROW_DOWN:
+            player[1] += 1
+        elif c == ARROW_LEFT:
+            player[0] -= 1
+        elif c == ARROW_RIGHT:
+            player[0] += 1
 
 if __name__ == "__main__":
     main()
