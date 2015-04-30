@@ -33,27 +33,50 @@ def draw(maze, px, py):
                 print(ASCII_WALL if status else ASCII_BLANK, end="")
         print()
 
+def verify(maze, player):
+    return not maze[player[1]][player[0]]
+
+def move(c, maze, player):
+    old = player[:]
+
+    if c == ARROW_UP:
+        player[1] -= 1
+    elif c == ARROW_DOWN:
+        player[1] += 1
+    elif c == ARROW_LEFT:
+        player[0] -= 1
+    elif c == ARROW_RIGHT:
+        player[0] += 1
+
+    if not verify(maze, player):
+        player[:] = old
+
 def clear():
     os.system("clear") if os.name == "posix" else os.system("cls")
 
 def main():
+    maze = [[1,1,1],[0,0,1],[1,1,1]]
+    frees = []
+    for y, row in enumerate(maze):
+        for x, wall in enumerate(row):
+            if not wall:
+                frees.append((x, y))
 
-    maze = [[1,1,1],[1,1,1],[1,1,1]]
     player = [0, 0]
+    end = [0, 0]
+    player[0], player[1] = frees[0]
+    end = list(frees[-1])
 
     while True:
         clear()
         draw(maze, *player)
 
+        if player == end:
+            break
+
         c = key_transform(controls.get())
-        if c == ARROW_UP:
-            player[1] -= 1
-        elif c == ARROW_DOWN:
-            player[1] += 1
-        elif c == ARROW_LEFT:
-            player[0] -= 1
-        elif c == ARROW_RIGHT:
-            player[0] += 1
+        move(c, maze, player)
+
 
 if __name__ == "__main__":
     main()
