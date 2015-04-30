@@ -23,6 +23,10 @@ ASCII_BLANK = " "
 
 import os
 
+def generate_maze(width, height):
+    maze = [[False] * width for row in range(height)]
+    return maze
+
 def draw(maze, px, py):
     player = (px, py)
     for y, row in enumerate(maze):
@@ -34,7 +38,7 @@ def draw(maze, px, py):
         print()
 
 def verify(maze, player):
-    return not maze[player[1]][player[0]]
+    return len(maze) > player[1] and len(maze[player[1]]) > player[0] and not maze[player[1]][player[0]]
 
 def move(c, maze, player):
     old = player[:]
@@ -55,7 +59,7 @@ def clear():
     os.system("clear") if os.name == "posix" else os.system("cls")
 
 def main():
-    maze = [[1,1,1],[0,0,1],[1,1,1]]
+    maze = generate_maze(10, 10)
     frees = []
     for y, row in enumerate(maze):
         for x, wall in enumerate(row):
