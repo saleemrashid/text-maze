@@ -1,4 +1,4 @@
-__all__ = ["getch"]
+__all__ = ["getch", "ungetch"]
 
 def _load_getch():
     try:
@@ -23,4 +23,15 @@ def _load_getch():
 
     return _getch
 
-getch = _load_getch()
+_getch = _load_getch()
+
+buf = []
+
+def getch():
+    if len(buf):
+        return buf.pop()
+    else:
+        return _getch()
+
+def ungetch(c):
+    buf.append(c)
