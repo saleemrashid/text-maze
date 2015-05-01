@@ -24,14 +24,15 @@ ASCII_WALL_H = "| "
 ASCII_WALL_V = "- "
 ASCII_JUNC   = "+ "
 ASCII_BLANK  = "  "
+ASCII_END    = "X "
 ANSI_NORMAL  = "\x1b[47;1m" if os.name == "posix" else ""
-ANSI_WALL    = "\x1b[30;40m" if os.name == "posix" else ""
+ANSI_WALL    = "\x1b[40;30m" if os.name == "posix" else ""
 ANSI_PLAYER  = "\x1b[43;33m" if os.name == "posix" else ""
+ANSI_END     = "\x1b[41;31m" if os.name == "posix" else ""
 ANSI_RESET   = "\x1b[0;0m" if os.name == "posix" else ""
 
-def draw(maze, px, py):
+def draw(maze, player, end):
     print("\x1b[?25l", end="") if os.name == "posix" else None
-    player = (px, py)
     for y, row in enumerate(maze):
         for x, status in enumerate(row):
             color = ANSI_NORMAL
@@ -40,6 +41,9 @@ def draw(maze, px, py):
             if player == (x, y):
                 cell = ASCII_PLAYER
                 color = ANSI_PLAYER
+            elif end == (x, y):
+                cell = ASCII_END
+                color = ANSI_END
             elif status:
                 color = ANSI_WALL
                 left = False if x == 0 else row[x - 1]
@@ -102,15 +106,14 @@ def main():
                 frees.append((x, y))
 
     player = [0, 0]
-    end = [0, 0]
     player[0], player[1] = frees[0]
-    end = list(frees[-1])
+    end = frees[-1]
 
     while True:
         clear()
-        draw(maze, *player)
+        draw(maze, tuple(player), end)
 
-        if player == end:
+        if tuple(player) == end:
             break
 
         c = key_transform(controls.get())
