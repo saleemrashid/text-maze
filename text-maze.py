@@ -30,8 +30,10 @@ ANSI_PLAYER  = "\x1b[43;33m" if os.name == "posix" else ""
 ANSI_RESET   = "\x1b[0;0m" if os.name == "posix" else ""
 
 def draw(maze, px, py):
+    print("\x1b[?25l")
     player = (px, py)
     for y, row in enumerate(maze):
+        print(ASCII_BLANK, end="")
         for x, status in enumerate(row):
             color = ANSI_NORMAL
             cell = ASCII_BLANK
@@ -63,6 +65,7 @@ def draw(maze, px, py):
             print(cell, end="")
             print(ANSI_RESET, end="")
         print()
+    print("\x1b[?25h")
 
 def verify(maze, player):
     return player[0] >= 0 and player[1] >= 0 and len(maze) > player[1] and len(maze[player[1]]) > player[0] and not maze[player[1]][player[0]]
@@ -83,10 +86,15 @@ def move(c, maze, player):
         player[:] = old
 
 def clear():
-    print(ANSI_RESET)
-    os.system("clear") if os.name == "posix" else os.system("cls")
+    if os.name == "posix":
+        print(ANSI_RESET, end="\x1b[H")
+    else:
+        os.system("cls")
 
 def main():
+    if os.name == "posix":
+        os.system("clear")
+
     maze = Maze(16, 8)
     frees = []
     for y, row in enumerate(maze):
