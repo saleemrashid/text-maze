@@ -18,9 +18,11 @@ def key_transform(c):
     c = c.lower() if len(c) == 1 else c
     return keys[c] if c in keys else c
 
-ASCII_PLAYER = "X "
-ASCII_WALL = "# "
-ASCII_BLANK = "  "
+ASCII_PLAYER = "O "
+ASCII_WALL_H = "| "
+ASCII_WALL_V = "- "
+ASCII_JUNC   = "+ "
+ASCII_BLANK  = "  "
 
 import os
 
@@ -30,8 +32,26 @@ def draw(maze, px, py):
         for x, status in enumerate(row):
             if player == (x, y):
                 print(ASCII_PLAYER, end="")
+            elif not status:
+                print(ASCII_BLANK, end="")
             else:
-                print(ASCII_WALL if status else ASCII_BLANK, end="")
+                left = False if x == 0 else row[x - 1]
+                right = False if x + 1 == len(row) else row[x + 1]
+                above = False if y == 0 else maze[y - 1][x]
+                below = False if y + 1 == len(maze) else maze[y + 1][x]
+                v = above or below
+                h = left or right
+
+                if v and h:
+                    print(ASCII_JUNC, end="")
+                elif v:
+                    print(ASCII_WALL_H, end="")
+                elif h:
+                    print(ASCII_WALL_V, end="")
+                elif y % 2 == 0:
+                    print(ASCII_WALL_V, end="")
+                else:
+                    print(ASCII_WALL_H, end="")
         print()
 
 def verify(maze, player):

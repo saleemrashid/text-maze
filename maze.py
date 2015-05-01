@@ -6,7 +6,6 @@ def Maze(width, height):
     maze[::2] = [[True, True] * width + [True] for y in range(height)]
     maze[1::2] = [[True, False] * width + [True] for y in range(height)]
     maze += [[True] * width * 2 + [True]]
-    print(maze)
     done = [[False] * width for y in range(height)]
     def walk(x, y):
         done[y][x] = True
