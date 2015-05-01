@@ -30,10 +30,9 @@ ANSI_PLAYER  = "\x1b[43;33m" if os.name == "posix" else ""
 ANSI_RESET   = "\x1b[0;0m" if os.name == "posix" else ""
 
 def draw(maze, px, py):
-    print("\x1b[?25l")
+    print("\x1b[?25l", end="") if os.name == "posix" else None
     player = (px, py)
     for y, row in enumerate(maze):
-        print(ASCII_BLANK, end="")
         for x, status in enumerate(row):
             color = ANSI_NORMAL
             cell = ASCII_BLANK
@@ -65,7 +64,7 @@ def draw(maze, px, py):
             print(cell, end="")
             print(ANSI_RESET, end="")
         print()
-    print("\x1b[?25h")
+    print("\x1b[?25h", end="") if os.name == "posix" else None
 
 def verify(maze, player):
     return player[0] >= 0 and player[1] >= 0 and len(maze) > player[1] and len(maze[player[1]]) > player[0] and not maze[player[1]][player[0]]
