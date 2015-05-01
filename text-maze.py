@@ -6,6 +6,7 @@
 import controls
 from controls import ARROW_UP, ARROW_LEFT, ARROW_DOWN, ARROW_RIGHT
 from maze import Maze
+import os
 
 keys = {
     "w": ARROW_UP,
@@ -23,18 +24,23 @@ ASCII_WALL_H = "| "
 ASCII_WALL_V = "- "
 ASCII_JUNC   = "+ "
 ASCII_BLANK  = "  "
-
-import os
+ANSI_NORMAL  = "\x1b[47;1m" if os.name == "posix" else ""
+ANSI_WALL    = "\x1b[30;40m" if os.name == "posix" else ""
+ANSI_PLAYER  = "\x1b[43;33m" if os.name == "posix" else ""
+ANSI_RESET   = "\x1b[0;0m" if os.name == "posix" else ""
 
 def draw(maze, px, py):
     player = (px, py)
     for y, row in enumerate(maze):
         for x, status in enumerate(row):
+            color = ANSI_NORMAL
+            cell = ASCII_BLANK
+
             if player == (x, y):
-                print(ASCII_PLAYER, end="")
-            elif not status:
-                print(ASCII_BLANK, end="")
-            else:
+                cell = ASCII_PLAYER
+                color = ANSI_PLAYER
+            elif status:
+                color = ANSI_WALL
                 left = False if x == 0 else row[x - 1]
                 right = False if x + 1 == len(row) else row[x + 1]
                 above = False if y == 0 else maze[y - 1][x]
@@ -43,15 +49,19 @@ def draw(maze, px, py):
                 h = left or right
 
                 if v and h:
-                    print(ASCII_JUNC, end="")
+                    cell = ASCII_JUNC
                 elif v:
-                    print(ASCII_WALL_H, end="")
+                    cell = ASCII_WALL_H
                 elif h:
-                    print(ASCII_WALL_V, end="")
+                    cell = ASCII_WALL_V
                 elif y % 2 == 0:
-                    print(ASCII_WALL_V, end="")
+                    cell = ASCII_WALL_V
                 else:
-                    print(ASCII_WALL_H, end="")
+                    cell = ASCII_WALL_H
+
+            print(color, end="")
+            print(cell, end="")
+            print(ANSI_RESET, end="")
         print()
 
 def verify(maze, player):
@@ -73,6 +83,7 @@ def move(c, maze, player):
         player[:] = old
 
 def clear():
+    print(ANSI_RESET)
     os.system("clear") if os.name == "posix" else os.system("cls")
 
 def main():
