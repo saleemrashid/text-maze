@@ -6,7 +6,7 @@
 import controls
 from controls import ARROW_UP, ARROW_LEFT, ARROW_DOWN, ARROW_RIGHT
 from maze import Maze
-import os
+import os, sys
 
 keys = {
     "w": ARROW_UP,
@@ -76,7 +76,9 @@ def verify(maze, player):
 def move(c, maze, player):
     old = player[:]
 
-    if c == ARROW_UP:
+    if c == "q":
+        sys.exit(0)
+    elif c == ARROW_UP:
         player[1] -= 1
     elif c == ARROW_DOWN:
         player[1] += 1
