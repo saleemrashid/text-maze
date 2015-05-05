@@ -7,6 +7,7 @@ import controls
 from controls import ARROW_UP, ARROW_LEFT, ARROW_DOWN, ARROW_RIGHT
 from maze import Maze
 import os, sys
+from shutil import get_terminal_size
 
 keys = {
     "w": ARROW_UP,
@@ -100,7 +101,8 @@ def main():
     if os.name == "posix":
         os.system("clear")
 
-    maze = Maze(16, 8)
+    size = get_terminal_size((80, 24))
+    maze = Maze(size[0] // 4 - 1, size[1] // 2 - 1)
     frees = []
     for y, row in enumerate(maze):
         for x, wall in enumerate(row):
