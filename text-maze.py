@@ -15,6 +15,8 @@ except:
     def get_terminal_size(fallback):
         return fallback
 
+ansi = sys.platform != "Pocket PC" and (sys.platform != "win32" or "ANSICON" in os.environ) and hasattr(sys.stdout, "isatty") and sys.stdout.isatty()
+
 keys = {
     "w": ARROW_UP,
     "a": ARROW_LEFT,
@@ -32,14 +34,14 @@ ASCII_WALL_V = "- "
 ASCII_JUNC   = "+ "
 ASCII_BLANK  = "  "
 ASCII_END    = "X "
-ANSI_NORMAL  = "\x1b[47;1m" if os.name == "posix" else ""
-ANSI_WALL    = "\x1b[40;30m" if os.name == "posix" else ""
-ANSI_PLAYER  = "\x1b[43;33m" if os.name == "posix" else ""
-ANSI_END     = "\x1b[41;31m" if os.name == "posix" else ""
-ANSI_RESET   = "\x1b[0;0m" if os.name == "posix" else ""
+ANSI_NORMAL  = "\x1b[47;1m"  if ansi else ""
+ANSI_WALL    = "\x1b[40;30m" if ansi else ""
+ANSI_PLAYER  = "\x1b[43;33m" if ansi else ""
+ANSI_END     = "\x1b[41;31m" if ansi else ""
+ANSI_RESET   = "\x1b[0;0m"   if ansi else ""
 
 def draw(maze, player, end):
-    print("\x1b[?25l", end="") if os.name == "posix" else None
+    print("\x1b[?25l", end="") if ansi else None
     for y, row in enumerate(maze):
         for x, status in enumerate(row):
             color = ANSI_NORMAL
@@ -75,7 +77,7 @@ def draw(maze, player, end):
             print(cell, end="")
             print(ANSI_RESET, end="")
         print()
-    print("\x1b[?25h", end="") if os.name == "posix" else None
+    print("\x1b[?25h", end="") if ansi else None
 
 def verify(maze, player):
     return player[0] >= 0 and player[1] >= 0 and len(maze) > player[1] and len(maze[player[1]]) > player[0] and not maze[player[1]][player[0]]
@@ -98,14 +100,15 @@ def move(c, maze, player):
         player[:] = old
 
 def clear():
-    if os.name == "posix":
+    if ansi:
         print(ANSI_RESET, end="\x1b[H")
+    elif os.name == "posix":
+        os.system("clear")
     else:
         os.system("cls")
 
 def main():
-    if os.name == "posix":
-        os.system("clear")
+    os.system("clear" if os.name == "posix" else "cls")
 
     size = get_terminal_size((80, 24))
     maze = Maze(size[0] // 4 - 1, size[1] // 2 - 1)
