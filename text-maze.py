@@ -2,12 +2,18 @@
 #
 # text-maze
 #
+from __future__ import print_function
 
 import controls
 from controls import ARROW_UP, ARROW_LEFT, ARROW_DOWN, ARROW_RIGHT
 from maze import Maze
 import os, sys
-from shutil import get_terminal_size
+
+try:
+    from shutil import get_terminal_size
+except:
+    def get_terminal_size(fallback):
+        return fallback
 
 keys = {
     "w": ARROW_UP,
